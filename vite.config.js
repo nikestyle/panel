@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-   base: '/nikestyle.github.io/panel/',
+   base: process.env.NODE_ENV === 'production' ? '/panel/' : '/',
    plugins: [
       vue(),
    ],
