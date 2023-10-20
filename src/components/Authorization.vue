@@ -6,27 +6,39 @@ export default {
          password: '',
          alertActive: false,
          alertMessage: '',
-         alertColor: false
+         alertColor: false,
+         dataSuccess: false
       }
    },
    methods: {
       login: function () {
-         this.alertActive = true
          this.alertMessage = ''
 
          if (this.email === 'max@email.com') {
             if (this.password.length >= 6) {
-               this.alertMessage = 'Success';
+               this.alertActive = false;
+               this.dataSuccess = true;
                this.alertColor = true;
+               setTimeout(() => {
+                  this.alertActive = true
+                  this.dataSuccess = false;
+                  this.alertMessage = 'Success';
+               }, 1000)
+               setTimeout(() => {
+                  this.$emit('authorization-success');
+                  this.$emit('login-success');
+               }, 2000)
             } else {
+               this.alertActive = true
                this.alertMessage = 'The password must contain at least 6 characters';
                this.alertColor = false;
             }
          } else {
+            this.alertActive = true
             this.alertMessage = 'Email is not correct';
             this.alertColor = false;
          }
-      }
+      },
    }
 }
 </script>
@@ -45,7 +57,11 @@ export default {
                         <label for="password">Password:</label>
                         <input type="password" class="form-control" id="password" v-model="password" required>
                      </div>
-                     <button type="submit" class="btn btn-primary">Join</button>
+                     <button type="submit" class="btn btn-primary"><span v-if="!dataSuccess">Join</span>
+                        <div v-else class="spinner-border" role="status">
+
+                        </div>
+                     </button>
                   </form>
                </div>
             </div>
